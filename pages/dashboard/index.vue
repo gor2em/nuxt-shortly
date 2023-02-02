@@ -7,24 +7,14 @@
             <h1 class="text-2xl font-bold text-white">Dashboard</h1>
         </section>
         <section class="container mt-10">
-            <div class="card">
-                <form>
-                    <div class="flex items-end gap-5">
-                        <div class="w-5/12">
-                            <label for="url" class="text-white">Long URL</label>
-                            <input type="text" id="url" />
-                        </div>
-                        <div class="w-5/12">
-                            <label for="shortKey" class="text-white">Short Key</label>
-                            <input type="text" id="shortKey" />
-                        </div>
-                        <div class="w-2/12">
-                            <button class="w-full btn-primary rounded-lg py-3">Short</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+            <LinkForm />
         </section>
-        <section></section>
+        <section class="container mt-10">
+            <LinkItem v-for="i in 10" :key="i" :link="{
+                shortKey: '/1qadS9',
+                longUrl: 'http://google.com',
+                id: '1'
+            }" class="mb-5" />
+        </section>
     </main>
 </template>
