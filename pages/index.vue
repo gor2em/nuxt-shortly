@@ -7,7 +7,7 @@
                     Transform your long, cumbersome URLs into short and
                     shareable links with TinyLink
                 </p>
-                <nuxt-link :to="{ name: 'index' }" class="btn btn-primary">
+                <nuxt-link :to="{ name: 'dashboard' }" class="btn btn-primary">
                     Short Now!
                 </nuxt-link>
             </div>
