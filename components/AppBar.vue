@@ -33,7 +33,7 @@ const navLinks = ref<{
                     </nuxt-link>
                 </li>
                 <li>
-                    <nuxt-link to="/auth" class="btn btn-primary">Sign In</nuxt-link>
+                    <nuxt-link :to="{ name: 'auth' }" class="btn btn-primary">Sign In</nuxt-link>
                 </li>
             </ul>
         </nav>
