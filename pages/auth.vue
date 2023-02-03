@@ -1,5 +1,10 @@
 <script setup lang="ts">
-
+const supabaseAuth = useSupabaseAuthClient();
+const handleGithubLogin = () => {
+    supabaseAuth.auth.signInWithOAuth({
+        provider: 'github',
+    });
+}
 </script>
 <template>
 
@@ -20,7 +25,7 @@
                     </div>
                 </div>
 
-                <button class="btn btn-primary w-full mt-5">
+                <button class="btn btn-primary w-full mt-5" @click="handleGithubLogin">
                     Continue with Github
                 </button>
 
