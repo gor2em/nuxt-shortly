@@ -1,9 +1,41 @@
 <script setup lang="ts">
+
 const supabaseAuth = useSupabaseAuthClient();
 const handleGithubLogin = () => {
     supabaseAuth.auth.signInWithOAuth({
         provider: 'github',
     });
+}
+
+const errors = ref<string>("")
+
+const form = reactive({
+    email: "",
+    password: ""
+});
+
+const handleLoginForm = async () => {
+    if (!form.email || !form.password) {
+        errors.value = "please fill all the fields"
+        return;
+    }
+
+
+    try {
+        const { data, error } = await supabaseAuth.auth.signInWithPassword({
+            email: form.email,
+            password: form.password
+        });
+
+        if (error) {
+            errors.value = error.message;
+        }
+
+        console.log(data)
+    } catch (error) {
+
+        errors.value = "Something went wrong."
+    }
 }
 </script>
 <template>
@@ -32,17 +64,22 @@ const handleGithubLogin = () => {
 
                 <hr class="border border-white/10 my-8">
 
-                <form>
+                <form @submit.prevent="handleLoginForm">
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" name="email" id="email" placeholder="john@doe.com">
+                        <input v-model="form.email" type="email" name="email" id="email" placeholder="john@doe.com">
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" name="password" id="password" placeholder="*******">
+                        <input v-model="form.password" type="password" name="password" id="password"
+                            placeholder="*******">
                     </div>
 
                     <button type="submit" class="btn btn-primary w-full mt-5">Login</button>
+
+                    <div class="text-red-500 text-center mt-5">
+                        {{ errors }}
+                    </div>
                 </form>
 
             </div>
