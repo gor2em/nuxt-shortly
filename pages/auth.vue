@@ -7,6 +7,7 @@ const handleGithubLogin = () => {
     });
 }
 
+const isLoggingIn = ref<boolean>(true);
 const errors = ref<string>("")
 
 const form = reactive({
@@ -14,12 +15,35 @@ const form = reactive({
     password: ""
 });
 
+
+const handleSignup = async () => {
+    try {
+        const { data, error } = await supabaseAuth.auth.signUp({
+            email: form.email,
+            password: form.password
+        });
+
+        if (error) {
+            errors.value = error.message;
+            return;
+        }
+
+        console.log(data)
+    } catch (error) {
+
+        errors.value = "Something went wrong."
+    }
+}
+
 const handleLoginForm = async () => {
     if (!form.email || !form.password) {
         errors.value = "please fill all the fields"
         return;
     }
 
+    if (!isLoggingIn.value) {
+        return handleSignup();
+    }
 
     try {
         const { data, error } = await supabaseAuth.auth.signInWithPassword({
@@ -29,6 +53,7 @@ const handleLoginForm = async () => {
 
         if (error) {
             errors.value = error.message;
+            return;
         }
 
         console.log(data)
@@ -75,7 +100,23 @@ const handleLoginForm = async () => {
                             placeholder="*******">
                     </div>
 
-                    <button type="submit" class="btn btn-primary w-full mt-5">Login</button>
+                    <template v-if="isLoggingIn">
+                        <button type="submit" class="btn btn-primary w-full mt-5">Login</button>
+                    </template>
+                    <template v-else>
+                        <button type="submit" class="btn btn-primary w-full mt-5">Signup</button>
+                    </template>
+
+                    <div class="text-center">
+                        <button class="mt-5" @click.prevent="isLoggingIn = !isLoggingIn">
+                            <template v-if="isLoggingIn">
+                                Don't have an account? Signup
+                            </template>
+                            <template v-else>
+                                Already have an account? Login
+                            </template>
+                        </button>
+                    </div>
 
                     <div class="text-red-500 text-center mt-5">
                         {{ errors }}
